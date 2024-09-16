@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class SE_STORE5 {
     public static void main(String[] args) throws IOException {
-        File Product = new File("C:\\Users\\User\\IdeaProjects\\Lab1\\src\\SE_STORE5\\PRODUCT (4).txt");;
+        File Product = new File("C:\\Users\\ghost\\IdeaProjects\\untitled\\src\\SE_STORE5\\PRODUCT (4).txt");;
         Scanner countNum = new Scanner(System.in);
         int typeNumber;
         ArrayList<String> product = new ArrayList<String>();
@@ -21,7 +21,7 @@ public class SE_STORE5 {
         ArrayList<String>id = new ArrayList<String>();
         int countProduct=0;
         ArrayList<String> idCategory = new ArrayList<String>();
-        File category = new File("C:\\Users\\User\\IdeaProjects\\Lab1\\src\\SE_STORE5\\CATEGORY.txt");
+        File category = new File("C:\\Users\\ghost\\IdeaProjects\\untitled\\src\\SE_STORE5\\CATEGORY.txt");
         ArrayList<String>nameCategory = new ArrayList<String>();
         String typeCategory;
         Scanner inputCategory = new Scanner(category);
@@ -30,7 +30,7 @@ public class SE_STORE5 {
         boolean loopCategory = true;
         Scanner inputTypeCategory = new Scanner(System.in);
         boolean loopDisplay1 = true;
-        File member = new File("C:\\Users\\User\\IdeaProjects\\Lab1\\src\\SE_STORE5\\MEMBER (5).txt");
+        File member = new File("C:\\Users\\ghost\\IdeaProjects\\untitled\\src\\SE_STORE5\\MEMBER (5).txt");
         Scanner inputMember = new Scanner(member);
         ArrayList<String> idUser = new ArrayList<String>();
         ArrayList<String> fisrtnameUser = new ArrayList<String>();
@@ -303,26 +303,54 @@ public class SE_STORE5 {
                                             }
 
                                             if(checkAddmember == true){
-                                                try {
-                                                    // สร้าง FileWriter
-                                                    FileWriter writer = new FileWriter("C:\\Users\\User\\IdeaProjects\\Lab1\\src\\SE_STORE5\\MEMBER (5).txt", true);
-                                                    Random random = new Random();
-                                                    String randomPassword = Integer.toString(random.nextInt(999999));
-
-                                                    System.out.println("\tSuccess - New Member has been created!");
-                                                    System.out.println("\t" + firstnameAddMember + " " + lastnameAddMember.charAt(0) + " Password is " + randomPassword);
-
-                                                    loopAddMember = false;
-
-                                                    // แปลง newIdUser เป็น String
-                                                    int newIdUser = Integer.parseInt(idUser.get(correctIndex)) + 1;
-                                                    writer.append(Integer.toString(newIdUser) + "\t");
-
-                                                    // ปิด FileWriter
-                                                    writer.close();
-                                                } catch (IOException e) {
-                                                    e.printStackTrace();
+                                                //generate password
+                                                FileWriter writer = new FileWriter("C:\\Users\\ghost\\IdeaProjects\\untitled\\src\\SE_STORE5\\MEMBER (5).txt", true);
+                                                Random random = new Random();
+                                                String randomPassword = Integer.toString(random.nextInt(999999));
+                                                String randomLetter = "";
+                                                for(int i = 0 ; i < 19; i++){
+                                                    randomLetter += (char) (random.nextInt(26) + 'A');
                                                 }
+                                                StringBuilder newPassword = new StringBuilder(randomLetter);
+                                                newPassword.setCharAt(2,'1');
+                                                newPassword.setCharAt(6,'1');
+                                                int[] numberPosition = {9,10,13,14,15,16};
+                                                for(int i = 0; i < randomPassword.length() ; i++){
+                                                    newPassword.setCharAt(numberPosition[i],randomPassword.charAt(i));
+                                                }
+                                                System.out.println("\tSuccess - New Member has been created!");
+                                                System.out.println("\t" + firstnameAddMember + " " + lastnameAddMember.charAt(0) + " Password is " + randomPassword);
+                                                loopAddMember = false;
+
+                                                // แปลง newIdUser เป็น String
+                                                int indexIdUserLastest = idUser.size();
+                                                int newIdUser = Integer.parseInt(idUser.get(indexIdUserLastest-1))+1;
+                                                String keepMember = newIdUser + "\t" + firstnameAddMember + "\t" + lastnameAddMember + "\t" +
+                                                        emailAddMember + "\t" + newPassword + "\t" + phoneAddMember + "\t" + 0.00 + "\n";
+                                                writer.write(keepMember);
+                                               // ปิด FileWriter
+                                                writer.close();
+
+                                                //clear ข้อมูลใน arraylist เพื่อเก็บค่าใน อาเรย์ใหม่
+                                                idUser.clear();
+                                                fisrtnameUser.clear();
+                                                lastnameUser.clear();
+                                                emailUser.clear();
+                                                passwordUser.clear();
+                                                phoneUser.clear();
+                                                pointUser.clear();
+
+                                                while(inputMember.hasNextLine()){
+                                                    String[] line = inputMember.nextLine().split("\\s+");
+                                                    idUser.add(line[0]);
+                                                    fisrtnameUser.add(line[1]);
+                                                    lastnameUser.add(line[2]);
+                                                    emailUser.add(line[3]);
+                                                    passwordUser.add(line[4]);
+                                                    phoneUser.add(line[5]);
+                                                    pointUser.add(line[6]);
+                                                }
+
                                             }else if(checkAddmember == false){
                                                 System.out.println("\tError! - Your Information are Incorrect!");
                                                 loopAddMember = false;
