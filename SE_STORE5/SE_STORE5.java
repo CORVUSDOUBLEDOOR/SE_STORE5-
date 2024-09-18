@@ -30,8 +30,6 @@ public class SE_STORE5 {
         boolean loopCategory = true;
         Scanner inputTypeCategory = new Scanner(System.in);
         boolean loopDisplay1 = true;
-        File member = new File("C:\\Users\\ghost\\IdeaProjects\\untitled\\src\\SE_STORE5\\MEMBER (5).txt");
-        Scanner inputMember = new Scanner(member);
         ArrayList<String> idUser = new ArrayList<String>();
         ArrayList<String> fisrtnameUser = new ArrayList<String>();
         ArrayList<String> lastnameUser = new ArrayList<String>();
@@ -46,16 +44,6 @@ public class SE_STORE5 {
         int correctIndex = 0;
         String role = "";
         boolean loopAddMember = true;
-        while(inputMember.hasNextLine()){
-            String[] line = inputMember.nextLine().split("\\s+");
-            idUser.add(line[0]);
-            fisrtnameUser.add(line[1]);
-            lastnameUser.add(line[2]);
-            emailUser.add(line[3]);
-            passwordUser.add(line[4]);
-            phoneUser.add(line[5]);
-            pointUser.add(line[6]);
-        }
         while(reader.hasNextLine()){
             String[] line = reader.nextLine().split("\\s+");
             id.add(line[0]);
@@ -78,12 +66,33 @@ public class SE_STORE5 {
             int countErrorUser = 0;
             loopLogin = true;
             if(typeNumber == 1) {
+                File member = new File("C:\\Users\\ghost\\IdeaProjects\\untitled\\src\\SE_STORE5\\MEMBER (5).txt");
+                Scanner inputMember = new Scanner(member);
+                idUser.clear();
+                fisrtnameUser.clear();
+                lastnameUser.clear();
+                emailUser.clear();
+                passwordUser.clear();
+                phoneUser.clear();
+                pointUser.clear();
+                while(inputMember.hasNextLine()){
+                    String[] line = inputMember.nextLine().split("\\s+");
+                    idUser.add(line[0]);
+                    fisrtnameUser.add(line[1]);
+                    lastnameUser.add(line[2]);
+                    emailUser.add(line[3]);
+                    passwordUser.add(line[4]);
+                    phoneUser.add(line[5]);
+                    pointUser.add(line[6]);
+                }
                 while(loopLogin == true) {
+                    String Email = "";
+                    String password = "";
                     System.out.print("\t===== LOGIN =====\n" +
-                            "\tEmail : "); //johndoe@outlook.com
-                    String Email = inputEmail.nextLine();
-                    System.out.print("\tPassword : "); //665331
-                    String password = inputPassword.nextLine();
+                            "\tEmail : ");
+                    Email = inputEmail.nextLine();
+                    System.out.print("\tPassword : ");
+                    password = inputPassword.nextLine();
                     boolean checkEmailCorrect = false;
                     int emailIndex = -1;
                     StringBuilder passWord = new StringBuilder();
@@ -120,23 +129,30 @@ public class SE_STORE5 {
                     }
                     if(!checkUser || !checkEmailCorrect) {
                         System.out.println("\t====================\n" +
-                                "\tError! - Email or Password is Incorrect ("+countErrorUser+")");
-                        if(countErrorUser==3){
+                                "\tError! - Email or Password is Incorrect (" + countErrorUser + ")");
+                        checkUser = false;
+                        Email = "";
+                        password = "";
+                        if (countErrorUser == 3) {
                             loopLogin = false;
+                            Email = "";
+                            password = "";
                         }
                     }
 
                     //check role
-                    if(passwordUser.get(correctIndex).charAt(6) == '0'){
-                        role = "Staff";
-                    }else if(passwordUser.get(correctIndex).charAt(6) == '1'){
-                        role = "Regular";
-                    }else if(passwordUser.get(correctIndex).charAt(6) == '2'){
-                        role = "Silver";
-                    }else if(passwordUser.get(correctIndex).charAt(6) == '3'){
-                        role = "Gold";
-                    }
+                    role = "";
+
                     if(checkUser == true){
+                        if(passwordUser.get(correctIndex).charAt(6) == '0'){
+                            role = "Staff";
+                        }else if(passwordUser.get(correctIndex).charAt(6) == '1'){
+                            role = "Regular";
+                        }else if(passwordUser.get(correctIndex).charAt(6) == '2'){
+                            role = "Silver";
+                        }else if(passwordUser.get(correctIndex).charAt(6) == '3'){
+                            role = "Gold";
+                        }
                         if(passwordUser.get(correctIndex).charAt(2) == '1'){
                             String emailDisplay = emailUser.get(correctIndex).replaceAll("^([\\w]{2})(.*)(@[\\w]{2})(.*)$", "$1***$3***");
                             double point = Double.parseDouble(pointUser.get(correctIndex));
@@ -144,15 +160,15 @@ public class SE_STORE5 {
                             StringBuilder phoneDisplay = new StringBuilder(phoneUser.get(correctIndex));
                             phoneDisplay.insert(3,'-');
                             phoneDisplay.insert(7,'-');
-                            System.out.println("\t===== SE STORE =====\n" +
-                                    "\tHello, "+lastnameUser.get(correctIndex).charAt(0)+". "+ fisrtnameUser.get(correctIndex)+"\t("+ role +")\t\t\n" +
-                                    "\tEmail: "+ emailDisplay+ "\t\t\t\n" +
-                                    "\tPhone: "+phoneDisplay+"\t\t\t\n" +
-                                    "\tYou have "+pointDisplay+" Point\t\t\t\n" +
-                                    "\t====================");
                             loopOrNot = true;
                             if(!role.equalsIgnoreCase("Staff")) {
                                 while (loopOrNot == true) {
+                                    System.out.println("\t===== SE STORE =====\n" +
+                                            "\tHello, "+lastnameUser.get(correctIndex).charAt(0)+". "+ fisrtnameUser.get(correctIndex)+"\t("+ role +")\t\t\n" +
+                                            "\tEmail: "+ emailDisplay+ "\t\t\t\n" +
+                                            "\tPhone: "+phoneDisplay+"\t\t\t\n" +
+                                            "\tYou have "+pointDisplay+" Point\t\t\t\n" +
+                                            "\t====================");
                                     System.out.printf(
                                             "\t===== SE STORE =====\t\t\t\n" +
 
@@ -217,6 +233,14 @@ public class SE_STORE5 {
                                 }
                             }else{
                                 while (loopOrNot == true) {
+                                    System.out.println("\t===== SE STORE =====\n" +
+                                            "\tHello, "+lastnameUser.get(correctIndex).charAt(0)+
+                                            ". "+ fisrtnameUser.get(correctIndex)+
+                                            "\t("+ role +")\t\t\n" +
+                                            "\tEmail: "+ emailDisplay+ "\t\t\t\n" +
+                                            "\tPhone: "+phoneDisplay+"\t\t\t\n" +
+                                            "\tYou have "+pointDisplay+" Point\t\t\t\n" +
+                                            "\t====================");
                                     System.out.printf(
                                             "\t===== SE STORE =====\t\t\t\n" +
 
@@ -306,7 +330,8 @@ public class SE_STORE5 {
                                                 //generate password
                                                 FileWriter writer = new FileWriter("C:\\Users\\ghost\\IdeaProjects\\untitled\\src\\SE_STORE5\\MEMBER (5).txt", true);
                                                 Random random = new Random();
-                                                String randomPassword = Integer.toString(random.nextInt(999999));
+                                                int randomNumber = random.nextInt(999999);
+                                                String randomPassword = String.format("%06d",randomNumber);
                                                 String randomLetter = "";
                                                 for(int i = 0 ; i < 19; i++){
                                                     randomLetter += (char) (random.nextInt(26) + 'A');
@@ -331,26 +356,6 @@ public class SE_STORE5 {
                                                // ปิด FileWriter
                                                 writer.close();
 
-                                                //clear ข้อมูลใน arraylist เพื่อเก็บค่าใน อาเรย์ใหม่
-                                                idUser.clear();
-                                                fisrtnameUser.clear();
-                                                lastnameUser.clear();
-                                                emailUser.clear();
-                                                passwordUser.clear();
-                                                phoneUser.clear();
-                                                pointUser.clear();
-
-                                                while(inputMember.hasNextLine()){
-                                                    String[] line = inputMember.nextLine().split("\\s+");
-                                                    idUser.add(line[0]);
-                                                    fisrtnameUser.add(line[1]);
-                                                    lastnameUser.add(line[2]);
-                                                    emailUser.add(line[3]);
-                                                    passwordUser.add(line[4]);
-                                                    phoneUser.add(line[5]);
-                                                    pointUser.add(line[6]);
-                                                }
-
                                             }else if(checkAddmember == false){
                                                 System.out.println("\tError! - Your Information are Incorrect!");
                                                 loopAddMember = false;
@@ -359,6 +364,8 @@ public class SE_STORE5 {
                                     }else if (typeNumber == 3) {
                                         loopLogin = false;
                                         loopOrNot = false;
+                                        Email = "";
+                                        password = "";
                                     }
                                 }
                             }
